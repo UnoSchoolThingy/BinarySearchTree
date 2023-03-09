@@ -19,7 +19,7 @@ struct Node {
   }
 };
 
-Struct BST {
+struct BST {
   Node* root;
 
   BST() {
