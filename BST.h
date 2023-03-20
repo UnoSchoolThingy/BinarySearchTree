@@ -68,5 +68,18 @@ struct BST {
     return false;
   }
 
+  bool remove(int data) {
+     // Search 
+    Node* curr = root;
+    while (curr != nullptr) {
+      if (curr->data == data) {
+	// curr is the node we want to get rid of
+	// im too lazy to do anything else today im so tired good luck future me 
+      }
+      if (data > curr->data) curr = curr->right;
+      else curr = curr->left;
+    }
+    return false;
+  }
   
 };

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "BST.h"
+#include "Utils.h"
 
 using namespace std;
 
