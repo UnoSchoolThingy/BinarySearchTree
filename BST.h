@@ -103,10 +103,10 @@ struct BST {
           // Two children
           Node* successor = curr->right; 
           while (successor->left != nullptr) successor = successor->left; // Find the smallest value in the right subtree
-          curr->data = successor->data;
+          curr->data = successor->data; // We can safely swap cuz any values in the right subtree are greater than the current node cuz successor is the next largest value from curr 
           (successor->parent->left == successor ? successor->parent->left : successor->parent->right) = successor->right; // We are replacing the successor with its right child
           if (successor->right != nullptr) successor->right->parent = successor->parent;
-          delete successor;
+          delete successor; // Get rid of the sacrificial node (your sacrifice will not be forgotten)
         }
         return true;
       }
