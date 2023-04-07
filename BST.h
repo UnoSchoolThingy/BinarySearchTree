@@ -53,7 +53,9 @@ struct BST {
       else if (data < curr->data) curr = curr->left;
       else return false; // We have a duplicate :(
     }
-    ((data < prev->data) ? prev->left : prev->right) = new Node(data);
+    Node* newNode = new Node(data);
+    newNode->parent = prev;
+    ((data < prev->data) ? prev->left : prev->right) = newNode;
     return true;
   }
 
@@ -73,8 +75,40 @@ struct BST {
     Node* curr = root;
     while (curr != nullptr) {
       if (curr->data == data) {
-	// curr is the node we want to get rid of
-	// im too lazy to do anything else today im so tired good luck future me 
+        // curr is the node we want to get rid of
+        if (curr->left == nullptr && curr->right == nullptr) { // We have no children 
+          if (curr->parent == nullptr) {
+            // We're the root
+            root = nullptr; // Bye bye root
+          } else {
+            // We're not the root
+            if (curr->parent->left == curr) curr->parent->left = nullptr;
+            else curr->parent->right = nullptr; 
+          }
+          delete curr;
+        } else if (curr->left == nullptr || curr->right == nullptr) {
+          // One child
+          Node* child = (curr->left == nullptr) ? curr->right : curr->left;
+          if (curr->parent == nullptr) {
+            // We're the root
+            root = child;
+          } else {
+            // We're not the root, so we connect the parent to the child (yay) 
+            if (curr->parent->left == curr) curr->parent->left = child;
+            else curr->parent->right = child; 
+          }
+          child->parent = curr->parent;
+          delete curr;
+        } else {
+          // Two children
+          Node* successor = curr->right; 
+          while (successor->left != nullptr) successor = successor->left; // Find the smallest value in the right subtree
+          curr->data = successor->data;
+          (successor->parent->left == successor ? successor->parent->left : successor->parent->right) = successor->right; // We are replacing the successor with its right child
+          if (successor->right != nullptr) successor->right->parent = successor->parent;
+          delete successor;
+        }
+        return true;
       }
       if (data > curr->data) curr = curr->right;
       else curr = curr->left;
